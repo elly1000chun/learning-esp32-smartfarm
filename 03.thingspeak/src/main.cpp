@@ -59,7 +59,7 @@ int rand5()
 
 void loop() {
 
-  if(count > 5) 
+  if(count > 2) 
   {
     delay(1000);
     return;
@@ -67,6 +67,6 @@ void loop() {
   
   // send dummy value for now
   SendDataThingspeak(23 + rand5(), 40+ rand5(), 60+ rand5());
-  delay(5000);
+  delay(10000);
   count++;
 }

@@ -5,6 +5,7 @@
 - WiFi 연결
 - ThingSpeak에 랜덤 온도, 습도, 토양건조도 데이터 전송
   - 지금은 더미 데이터 전송
+- 데이터는 [ThingSpeak Channel](https://thingspeak.mathworks.com/channels/3355302) 에서 확인 가능
 
 ### 기타 스펙
 - 연결 성공/실패시 효과음 재생
