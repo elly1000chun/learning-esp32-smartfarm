@@ -5,6 +5,7 @@
 
 void setup() {
   Serial.begin(115200);
+  pinMode(GPIO_LED, GPIO_MODE_OUTPUT);
 }
 
 void loop() {
