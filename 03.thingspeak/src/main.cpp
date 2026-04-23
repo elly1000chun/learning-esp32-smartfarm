@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include "piezo_sound.hpp"
+#include "thingspeak.hpp"
 
 #define LED 2
 #define GPIO_PIEZO 14
@@ -47,8 +48,25 @@ void setup() {
   }
 }
 
-int value = 0;
+int count = 0;
+
+int rand5()
+{
+  double R = (double)rand() / (double)RAND_MAX;
+  int val = (int)((R*10)-5 + 0.5);
+  return val;
+}
 
 void loop() {
-  // TBD
+
+  if(count > 5) 
+  {
+    delay(1000);
+    return;
+  }
+  
+  // send dummy value for now
+  SendDataThingspeak(23 + rand5(), 40+ rand5(), 60+ rand5());
+  delay(5000);
+  count++;
 }
