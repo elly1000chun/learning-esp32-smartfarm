@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include "RTCController.h"
 
+const char* ntpServer = "pool.ntp.org";
+uint8_t timeZone = 9;
+uint8_t summerTime = 0; // 3600
+
 RTCController::RTCController(uint8_t ioPin, uint8_t clkPin, uint8_t cePin)
   : mywire(ioPin, clkPin, cePin)
   , Rtc(mywire)
@@ -51,6 +55,43 @@ bool RTCController::InitializeRTC()
   if(!Rtc.GetIsRunning() || !Rtc.IsDateTimeValid())
   {
     return false;
+  }
+
+  return true;
+}
+
+bool RTCController::SyncRTCToNTP()
+{
+  configTime(3600 * timeZone, 3600 * summerTime, ntpServer); // init and get the time
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo))
+  {
+    Serial.println("Failed to obtain time");
+    return false;
+  }
+
+  time_t now;
+  time(&now);
+  uint64_t serverUnix = now + 3600 * timeZone;
+  uint64_t rtcUnix = Rtc.GetDateTime().Unix64Time();
+
+  RtcDateTime rtctime = Rtc.GetDateTime();
+  Serial.print("NTP Unix: ");
+  Serial.println(serverUnix);
+  
+  Serial.print("RTC Unix: ");
+  Serial.println(rtcUnix);
+
+  int diffTime = serverUnix - rtcUnix;
+  if ( abs(diffTime) > 60 )
+  {
+    Serial.println(String("RTC time synced."));
+    Serial.println(String("Diff time: ") + String(diffTime));
+    Serial.println(String("RTC time: ") + GetDateTimeString(rtctime));
+  }
+  else
+  {
+    Serial.println(String("RTC time is correct."));
   }
 
   return true;

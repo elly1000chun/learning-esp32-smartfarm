@@ -11,7 +11,7 @@ public:
   ~RTCController();
 
   bool InitializeRTC();
-
+  bool SyncRTCToNTP();
   String GetCurrentTimeString();
 
 private:

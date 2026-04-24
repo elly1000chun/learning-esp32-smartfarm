@@ -1,6 +1,7 @@
 #include <RtcDS1302.h>
-#include <WiFi.h>
+
 #include "RTCController.h"
+#include "WifiController.hpp"
 
 #define GPIO_RTC_CLK 14
 #define GPIO_RTC_DAT 12
@@ -10,11 +11,16 @@ RTCController Rtc(GPIO_RTC_DAT, GPIO_RTC_CLK, GPIO_RTC_RST);
 
 void setup() {
   Serial.begin(115200);
-  Rtc.InitializeRTC();
-  
+
+  bool isRTCAvailable = Rtc.InitializeRTC();
+  bool isWifiConnected = ConnectWifi();
+  if(isRTCAvailable && isWifiConnected)
+  {
+    Rtc.SyncRTCToNTP();
+  }
 }
 
 void loop() {
   Serial.println(Rtc.GetCurrentTimeString());
-  delay(200);
+  delay(1000);
 }
