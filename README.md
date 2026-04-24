@@ -8,7 +8,7 @@
 		 - 온습도 측정
 		 - 토양 습도 측정
 		 - OLED Display에 정보 표시
-		 - RTC 모듈을 사용해서 측정 시각 유닛별 자체 관리
+		 - RTC 모듈을 사용해서 측정 시각 유닛별 자체 관리-
 		 - Wi-Fi를 통해 측정 정보를 로컬 서버 또는 클라우드 서버에 기록
 	 - Nice to have
 		 - 딥슬립 기능을 활용한 배터리 절약
@@ -38,12 +38,12 @@
 |RTC 모듈|작성 전|
 
 ### 하위 프로젝트 리스트
- 1. Blink
- 2. OLED Display
- 3. Temperature & Humidity
- 4. Soil Dryness
- 5. Simple Wi-Fi
- 6. Upload data to server
+ 1. Blink LED
+ 2. Simple Wi-Fi Test
+ 3. Using Thingspeak (Upload data to server)
+ 4. OLED Display
+ 5. Sensing(Temperature, Humidity, Soil Dryness)
+ 6. Full Integration
 
 ### 기타
 #### 개발시 주의사항
