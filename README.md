@@ -8,7 +8,7 @@
 		 - 온습도 측정
 		 - 토양 습도 측정
 		 - OLED Display에 정보 표시
-		 - RTC 모듈을 사용해서 측정 시각 유닛별 자체 관리-
+		 - RTC 모듈을 사용해서 측정 시각 유닛별 자체 관리
 		 - Wi-Fi를 통해 측정 정보를 로컬 서버 또는 클라우드 서버에 기록
 	 - Nice to have
 		 - 딥슬립 기능을 활용한 배터리 절약
@@ -32,18 +32,20 @@
 ### 사용 HW 및 모델명
 |종류|모델명|
 |--|--|
-|ESP32 보드|작성 전|
-|온습도 센서|작성 전|
-|토양 습도 센서|작성 전|
-|RTC 모듈|작성 전|
+|ESP32 보드|WROOM32(CH340)|
+|온습도 센서|AHT20|
+|토양 습도 센서|Unknown|
+|RTC 모듈|DS1302|
+|OLED 0.96"|SSD1306|
 
 ### 하위 프로젝트 리스트
  1. Blink LED
  2. Simple Wi-Fi Test
  3. Using Thingspeak (Upload data to server)
  4. OLED Display
- 5. Sensing(Temperature, Humidity, Soil Dryness)
- 6. Full Integration
+ 5. Using RTC 
+ 6. Sensing(Temperature, Humidity, Soil Dryness)
+ 7. Full Integration
 
 ### 기타
 #### 개발시 주의사항
