@@ -13,8 +13,8 @@ public:
   bool Initialize();
 
   void SetTextSize(int size);
-  void PrintLine(String string, bool bUpdate = true);
-  void ClearDisplay(bool bUpdate = true);
+  void PrintLine(String string, bool bUpdate = false);
+  void ClearDisplay(bool bUpdate = false);
 
 private: 
   Adafruit_SSD1306 display;

@@ -2,18 +2,24 @@
 #include <WiFi.h>
 #include "network/thingspeak.hpp"
 #include "network/wifiController.hpp"
+#include "network/RTCController.h"
 #include "display/OledController.h"
 #include "sensors/AHT20Controller.h"
 #include "sensors/DrynessSensorController.hpp"
 
 #define SOILPIN 33
+#define GPIO_RTC_CLK 14
+#define GPIO_RTC_DAT 12
+#define GPIO_RTC_RST 13
 
 OledController oled;
 AHT20Controller aht;
+RTCController Rtc(GPIO_RTC_DAT, GPIO_RTC_CLK, GPIO_RTC_RST);
 
 bool isDisplayAvailable = false;
 bool isWifiConnected = false;
 bool isAHTAvailable = false;
+bool isRTCAvailable = false;
 
 void setup() {
   Serial.begin(115200);
@@ -38,6 +44,12 @@ void setup() {
     oled.PrintLine("Wi-Fi Error.");   
   }
 
+  isRTCAvailable = Rtc.InitializeRTC();
+  if(isRTCAvailable && isWifiConnected)
+  {
+    Rtc.SyncRTCToNTP();
+  }
+
   isAHTAvailable = aht.Initialize();
   if(isAHTAvailable)
   {
@@ -58,11 +70,7 @@ void loop()
     return;
   }
 
-  if(count > 3) 
-  {
-    delay(1000);
-    return;
-  }
+  String currentTime = Rtc.GetCurrentTimeString();
 
   int temperature = aht.GetTemperature();
   String tem = "Tem: " + String(temperature) + (char)247 + "C";
@@ -71,17 +79,20 @@ void loop()
   int dryness = DrynessSensor::GetSoilDryness(SOILPIN);
   String dry = "Dry: " + String(dryness) + "%";
 
-  oled.ClearDisplay(false);
+  oled.ClearDisplay();
+  oled.SetTextSize(1);
+  oled.PrintLine(currentTime);
+  oled.PrintLine("");
   oled.SetTextSize(2);
-  oled.PrintLine(tem, false);
-  oled.PrintLine(hum, false);
-  oled.PrintLine(dry);
+  oled.PrintLine(tem);
+  oled.PrintLine(hum);
+  oled.PrintLine(dry, true);
   
     // send dummy value for now
   if(isWifiConnected)  
   {
     //network::SendDataThingspeak(temperature, humidity, dryness);
   }
-  delay(10000);
+  delay(1000);
   count++;
 }
