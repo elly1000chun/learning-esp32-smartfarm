@@ -20,11 +20,6 @@ void setup() {
 
   // Init display
   isDisplayAvailable = oled.Initialize();
-  if(isDisplayAvailable == false)
-  {
-    // don't do anything
-    while(1);
-  }
 
   oled.SetTextSize(1);
   oled.PrintLine("Welcome.");
@@ -40,9 +35,7 @@ void setup() {
   }
   else
   {
-    oled.PrintLine("Wi-Fi Error.");
-    // don't do anything
-    while(1);
+    oled.PrintLine("Wi-Fi Error.");   
   }
 
   isAHTAvailable = aht.Initialize();
@@ -53,8 +46,6 @@ void setup() {
   else
   {
     oled.PrintLine("Temp&Hum sensor error.");
-    // don't do anything
-    while(1);
   }
 }
 
@@ -62,7 +53,7 @@ int count = 0;
 
 void loop()
 {
-  if(isAHTAvailable == false)
+  if(isAHTAvailable == false || isDisplayAvailable == false)
   {
     return;
   }
@@ -87,7 +78,10 @@ void loop()
   oled.PrintLine(dry);
   
     // send dummy value for now
-  //network::SendDataThingspeak(temperature, humidity, dryness);
+  if(isWifiConnected)  
+  {
+    //network::SendDataThingspeak(temperature, humidity, dryness);
+  }
   delay(10000);
   count++;
 }
