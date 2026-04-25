@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define VALUE_OFFSET 1000
+#define VALUE_OFFSET 0
 #define VALUE_MAX 4095
 
 namespace DrynessSensor

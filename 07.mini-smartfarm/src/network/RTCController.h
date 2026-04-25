@@ -13,6 +13,7 @@ public:
   bool InitializeRTC();
   bool SyncRTCToNTP();
   String GetCurrentTimeString();
+  int GetCurrentMinute();
 
 private:
   String GetDateTimeString(const RtcDateTime& dt);

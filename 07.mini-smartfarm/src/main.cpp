@@ -11,6 +11,7 @@
 #define GPIO_RTC_CLK 14
 #define GPIO_RTC_DAT 12
 #define GPIO_RTC_RST 13
+#define SYNC_DATA_INTERVAL_MINUTE 15
 
 OledController oled;
 AHT20Controller aht;
@@ -20,6 +21,8 @@ bool isDisplayAvailable = false;
 bool isWifiConnected = false;
 bool isAHTAvailable = false;
 bool isRTCAvailable = false;
+bool isFirstTimeSendingData = true;
+int prevDataSyncMinute = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -88,11 +91,19 @@ void loop()
   oled.PrintLine(hum);
   oled.PrintLine(dry, true);
   
-    // send dummy value for now
-  if(isWifiConnected)  
+  int minute = Rtc.GetCurrentMinute();
+
+  if(isFirstTimeSendingData || ((minute % SYNC_DATA_INTERVAL_MINUTE == 0) && minute != prevDataSyncMinute))
   {
-    //network::SendDataThingspeak(temperature, humidity, dryness);
+    Serial.println(Rtc.GetCurrentTimeString());
+    if(isWifiConnected)  
+    {
+      network::SendDataThingspeak(temperature, humidity, dryness);
+    }
+    isFirstTimeSendingData = false;
+    prevDataSyncMinute = minute;
   }
+
   delay(1000);
   count++;
 }
