@@ -10,6 +10,7 @@
 		 - OLED Display에 정보 표시
 		 - RTC 모듈을 사용해서 측정 시각 유닛별 자체 관리
 		 - Wi-Fi를 통해 측정 정보를 로컬 서버 또는 클라우드 서버에 기록
+            - Thingspeak를 활용[Link](https://thingspeak.mathworks.com/channels/3355302)
 	 - Nice to have
 		 - 딥슬립 기능을 활용한 배터리 절약
 		 - ESP32 유닛에 기본 유닛 정보(이름 등) 저장
@@ -51,4 +52,5 @@
 #### 개발시 주의사항
 - Security
   - Github에 올라가는 코드에는 외부 서비스의 API Key나 Wi-Fi Password가 직접 기재되어서는 안됨
-- ...
+- ThingSpeak Integration
+  - 하루 사용 가능한 API 사용 횟수에 제한이 있으므로 전송 간격은 10분보다 길어야 한다.
