@@ -3,11 +3,17 @@
 #include "network/thingspeak.hpp"
 #include "network/wifiController.hpp"
 #include "display/OledController.h"
+#include "sensors/AHT20Controller.h"
+#include "sensors/DrynessSensorController.hpp"
+
+#define SOILPIN 33
 
 OledController oled;
+AHT20Controller aht;
 
 bool isDisplayAvailable = false;
 bool isWifiConnected = false;
+bool isAHTAvailable = false;
 
 void setup() {
   Serial.begin(115200);
@@ -38,27 +44,49 @@ void setup() {
     // don't do anything
     while(1);
   }
+
+  isAHTAvailable = aht.Initialize();
+  if(isAHTAvailable)
+  {
+    oled.PrintLine("Temp&Hum sensor initialized.");
+  }
+  else
+  {
+    oled.PrintLine("Temp&Hum sensor error.");
+    // don't do anything
+    while(1);
+  }
 }
 
 int count = 0;
 
-int rand5()
+void loop()
 {
-  double R = (double)rand() / (double)RAND_MAX;
-  int val = (int)((R*10)-5 + 0.5);
-  return val;
-}
+  if(isAHTAvailable == false)
+  {
+    return;
+  }
 
-void loop() {
-
-  if(count > 2) 
+  if(count > 3) 
   {
     delay(1000);
     return;
   }
+
+  int temperature = aht.GetTemperature();
+  String tem = "Tem: " + String(temperature) + (char)247 + "C";
+  int humidity = aht.GetHumitidy();
+  String hum = "Hum: " + String(humidity) + "%";
+  int dryness = DrynessSensor::GetSoilDryness(SOILPIN);
+  String dry = "Dry: " + String(dryness) + "%";
+
+  oled.ClearDisplay(false);
+  oled.PrintLine(tem, false);
+  oled.PrintLine(hum, false);
+  oled.PrintLine(dry);
   
-  // send dummy value for now
-  network::SendDataThingspeak(23 + rand5(), 40+ rand5(), 60+ rand5());
+    // send dummy value for now
+  network::SendDataThingspeak(temperature, humidity, dryness);
   delay(10000);
   count++;
 }

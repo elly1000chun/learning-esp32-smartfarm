@@ -14,7 +14,7 @@ public:
 
   void SetTextSize(int size);
   void PrintLine(String string, bool bUpdate = true);
-  void ClearDisplay(bool bUpdate);
+  void ClearDisplay(bool bUpdate = true);
 
 private: 
   Adafruit_SSD1306 display;
