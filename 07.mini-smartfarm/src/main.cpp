@@ -81,12 +81,13 @@ void loop()
   String dry = "Dry: " + String(dryness) + "%";
 
   oled.ClearDisplay(false);
+  oled.SetTextSize(2);
   oled.PrintLine(tem, false);
   oled.PrintLine(hum, false);
   oled.PrintLine(dry);
   
     // send dummy value for now
-  network::SendDataThingspeak(temperature, humidity, dryness);
+  //network::SendDataThingspeak(temperature, humidity, dryness);
   delay(10000);
   count++;
 }
